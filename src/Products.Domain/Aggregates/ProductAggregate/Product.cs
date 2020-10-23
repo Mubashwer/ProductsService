@@ -36,7 +36,7 @@ namespace Products.Domain.Aggregates.ProductAggregate
         public decimal DeliveryPrice { get; private set; }
 
         private readonly List<ProductOption> _productOptions;
-        public IReadOnlyCollection<ProductOption> ProductOptions => _productOptions;
+        public virtual IReadOnlyCollection<ProductOption> ProductOptions => _productOptions;
 
         public void Update(string name, string? description, decimal price, decimal deliveryPrice)
         {

@@ -27,7 +27,11 @@ namespace Products.Infrastructure.Repositories
 
         public async Task<Product> AddAsync(Product product) => (await _context.Products.AddAsync(product)).Entity;
 
-        public async Task<Product?> FindByIdAsync(Guid id) => await _context.Products.FindAsync(id);
+        public async Task<Product?> FindByIdAsync(Guid productId) =>
+            await _context.Products
+                .AsNoTracking()
+                .Include(x => x.ProductOptions)
+                .FirstOrDefaultAsync(x => x.Id == productId);
 
         public void Update(Product product) => _context.Products.Update(product).State = EntityState.Modified;
 

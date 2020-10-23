@@ -7,7 +7,6 @@ namespace Products.Domain.Commands.ProductAggregate
     public class CreateProductOptionCommand
     {
         public Guid ProductOptionId { get; set; }
-        public Product Product { get; set; } = default!;
         public string Name { get; set; } = default!;
         public string? Description { get; set; }
     }

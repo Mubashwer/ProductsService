@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentValidation;
 using Products.Domain.Commands.ProductAggregate;
 using Products.Domain.Common;
@@ -10,8 +9,17 @@ namespace Products.Domain.Aggregates.ProductAggregate
 {
     public class Product : Entity, IAggregateRoot
     {
-        public Product(CreateProductCommand command) : base(command.ProductId)
+        public Product(Guid id, string name, string? description, decimal price, decimal deliveryPrice) : base(id)
         {
+            var command = new CreateProductCommand
+            {
+                ProductId = id,
+                Name = name,
+                Description = description,
+                Price = price,
+                DeliveryPrice = deliveryPrice
+            };
+
             var validator = new CreateProductCommandValidator();
             validator.ValidateAndThrow(command);
 
@@ -30,10 +38,20 @@ namespace Products.Domain.Aggregates.ProductAggregate
         private readonly List<ProductOption> _productOptions;
         public IReadOnlyCollection<ProductOption> ProductOptions => _productOptions;
 
-        public void Update(UpdateProductCommand command)
+        public void Update(string name, string? description, decimal price, decimal deliveryPrice)
         {
+            var command = new UpdateProductCommand
+            {
+                Name = name,
+                Description = description,
+                Price = price,
+                DeliveryPrice = deliveryPrice
+            };
+
+
             var validator = new UpdateProductCommandValidator();
             validator.ValidateAndThrow(command);
+
             Name = command.Name;
             Description = command.Description;
             Price = command.Price;
@@ -42,15 +60,7 @@ namespace Products.Domain.Aggregates.ProductAggregate
 
         public void AddProductOption(Guid productOptionId, string name, string description)
         {
-            var createProductOptionCommand = new CreateProductOptionCommand
-            {
-                Product = this,
-                Name = name,
-                Description = description,
-                ProductOptionId = productOptionId
-            };
-
-            var productOption = new ProductOption(createProductOptionCommand);
+            var productOption = new ProductOption(productOptionId, name, description);
 
             if (_productOptions.Contains(productOption))
             {

@@ -1,8 +1,8 @@
+using System;
 using System.Linq;
 using AutoFixture;
 using FluentValidation;
 using Products.Domain.Aggregates.ProductAggregate;
-using Products.Domain.Commands.ProductAggregate;
 using Products.Domain.Exceptions;
 using Products.Domain.UnitTests.TestData;
 using Xunit;
@@ -15,12 +15,14 @@ namespace Products.Domain.UnitTests.Tests
         public void CreateProduct_WithNullName_ThrowsValidationExceptionWithEmptyNameError()
         {
             //Arrange
+            var fixture = new Fixture();
             const string propertyName = "Name";
             const string errorMessage = "'Name' must not be empty.";
-            var command = new CreateProductCommand {Name = null!};
             
             //Act & Assert
-            var exception = Assert.Throws<ValidationException>(() => new Product(command));
+            var exception = Assert.Throws<ValidationException>(() => new Product(fixture.Create<Guid>(), null!,
+                fixture.Create<string>(),
+                Math.Abs(fixture.Create<decimal>()), Math.Abs(fixture.Create<decimal>())));
 
             //Assert
             Assert.Contains(exception.Errors, x => x.PropertyName == propertyName && x.ErrorMessage == errorMessage);

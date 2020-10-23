@@ -7,11 +7,11 @@ namespace Products.Domain.Common
     /// </summary>
     public abstract class Entity : IEquatable<Entity>
     {
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
 
         protected Entity(Guid id) => Id = id;
 
-        public bool Equals(Entity other)
+        public bool Equals(Entity? other)
         {
             if (other is null) return false;
             return ReferenceEquals(this, other) || Id.Equals(other.Id);
@@ -24,6 +24,8 @@ namespace Products.Domain.Common
             return obj.GetType() == GetType() && Equals((Entity)obj);
         }
 
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
+        // EF Core requires properties to have a non-readonly backing field
         public override int GetHashCode() => Id.GetHashCode();
 
         public static bool operator ==(Entity left, Entity right)

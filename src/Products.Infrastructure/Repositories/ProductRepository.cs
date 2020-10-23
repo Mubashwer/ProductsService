@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Products.Domain.Aggregates.ProductAggregate;
@@ -17,7 +18,11 @@ namespace Products.Infrastructure.Repositories
 
         public async Task<IPagedList<Product>> GetManyAsync(int pageNumber, int pageSize)
         {
-            return await _context.Products.AsQueryable().ToPagedListAsync(pageNumber, pageSize);
+            return await _context.Products
+                .AsNoTracking()
+                .Include(x => x.ProductOptions)
+                .AsQueryable()
+                .ToPagedListAsync(pageNumber, pageSize);
         }
 
         public async Task<Product> AddAsync(Product product) => (await _context.Products.AddAsync(product)).Entity;

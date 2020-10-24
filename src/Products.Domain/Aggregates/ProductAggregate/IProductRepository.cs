@@ -10,7 +10,7 @@ namespace Products.Domain.Aggregates.ProductAggregate
         /// Was having a dilemma whether to return IQueryable and do paging in service layer
         /// Ultimately went with this because returning IQueryable seemed like a leaky abstraction
         /// and would allow complex queries to be run outside of repository
-        Task<IPagedList<Product>> GetManyAsync(int pageNumber, int pageSize);
+        Task<IPagedList<Product>> GetPagedAsync(int pageNumber, int pageSize);
         Task<Product?> FindByIdAsync(Guid productId);
         Task<Product> AddAsync(Product product);
         void Update(Product product);

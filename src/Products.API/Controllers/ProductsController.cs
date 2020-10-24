@@ -29,7 +29,7 @@ namespace Products.API.Controllers
             [FromQuery, Range(1, int.MaxValue)] int pageNumber = 1,
             [FromQuery, Range(1, int.MaxValue)] int pageSize = 100)
         {
-            var products = await _productService.GetManyAsync(pageNumber, pageSize);
+            var products = await _productService.GetPagedAsync(pageNumber, pageSize);
             return new PagedListDto<ProductDto>(products);
         }
 

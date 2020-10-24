@@ -16,7 +16,7 @@ namespace Products.Infrastructure.Repositories
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public async Task<IPagedList<Product>> GetManyAsync(int pageNumber, int pageSize)
+        public async Task<IPagedList<Product>> GetPagedAsync(int pageNumber, int pageSize)
         {
             return await _context.Products
                 .AsNoTracking()

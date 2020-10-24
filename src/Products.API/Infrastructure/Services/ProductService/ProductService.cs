@@ -19,9 +19,9 @@ namespace Products.API.Infrastructure.Services.ProductService
             _productRepository = productRepository;
         }
 
-        public async Task<IPagedList<ProductDto>> GetManyAsync(int pageNumber, int pageSize)
+        public async Task<IPagedList<ProductDto>> GetPagedAsync(int pageNumber, int pageSize)
         {
-            var products = await _productRepository.GetManyAsync(pageNumber, pageSize);
+            var products = await _productRepository.GetPagedAsync(pageNumber, pageSize);
             var productDtos = new PagedList<ProductDto>(products, products.Select(x => x.ToDto()));
 
             _logger.LogDebug("Products fetched successfully");

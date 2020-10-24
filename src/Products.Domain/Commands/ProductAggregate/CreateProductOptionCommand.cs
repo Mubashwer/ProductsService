@@ -1,6 +1,5 @@
 ﻿using System;
 using FluentValidation;
-using Products.Domain.Aggregates.ProductAggregate;
 
 namespace Products.Domain.Commands.ProductAggregate
 {

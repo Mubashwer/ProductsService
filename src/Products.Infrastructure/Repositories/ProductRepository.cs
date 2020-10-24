@@ -34,7 +34,7 @@ namespace Products.Infrastructure.Repositories
 
         public async Task<Product?> FindByIdAsync(Guid productId)
         {
-            return await _context.Products.AsQueryable().FirstOrDefaultAsync(x => x.Id == productId);
+            return await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
         }
 
         public void Update(Product product)

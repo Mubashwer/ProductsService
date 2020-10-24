@@ -6,6 +6,10 @@ services:
     build:
       context: .
       dockerfile: src/Products.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - '5000:80'
     depends_on:
       - products.db
   

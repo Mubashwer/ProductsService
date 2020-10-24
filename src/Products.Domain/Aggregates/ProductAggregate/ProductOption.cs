@@ -26,7 +26,7 @@ namespace Products.Domain.Aggregates.ProductAggregate
         public string Name { get; private set; }
         public string? Description { get; private set; }
 
-        public void Update(string name, string description)
+        public void Update(string name, string? description)
         {
             var command = new UpdateProductOptionCommand
             {

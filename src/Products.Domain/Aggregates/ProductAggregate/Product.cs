@@ -58,7 +58,7 @@ namespace Products.Domain.Aggregates.ProductAggregate
             DeliveryPrice = command.DeliveryPrice;
         }
 
-        public void AddProductOption(Guid productOptionId, string name, string description)
+        public void AddProductOption(Guid productOptionId, string name, string? description)
         {
             var productOption = new ProductOption(productOptionId, name, description);
 

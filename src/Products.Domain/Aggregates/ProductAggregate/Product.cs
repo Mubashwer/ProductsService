@@ -48,7 +48,6 @@ namespace Products.Domain.Aggregates.ProductAggregate
                 DeliveryPrice = deliveryPrice
             };
 
-
             var validator = new UpdateProductCommandValidator();
             validator.ValidateAndThrow(command);
 

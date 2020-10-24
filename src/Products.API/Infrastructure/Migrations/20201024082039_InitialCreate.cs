@@ -27,7 +27,7 @@ namespace Products.API.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductOption",
+                name: "ProductOptions",
                 schema: "products",
                 columns: table => new
                 {
@@ -38,9 +38,9 @@ namespace Products.API.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductOption", x => x.Id);
+                    table.PrimaryKey("PK_ProductOptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductOption_Products_ProductId",
+                        name: "FK_ProductOptions_Products_ProductId",
                         column: x => x.ProductId,
                         principalSchema: "products",
                         principalTable: "Products",
@@ -49,16 +49,16 @@ namespace Products.API.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductOption_ProductId",
+                name: "IX_ProductOptions_ProductId",
                 schema: "products",
-                table: "ProductOption",
+                table: "ProductOptions",
                 column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductOption",
+                name: "ProductOptions",
                 schema: "products");
 
             migrationBuilder.DropTable(

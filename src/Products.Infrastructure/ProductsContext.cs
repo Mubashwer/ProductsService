@@ -19,7 +19,6 @@ namespace Products.Infrastructure
         {
             modelBuilder.HasDefaultSchema(DefaultSchema);
             modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductOptionEntityTypeConfiguration());
         }
     }
 }

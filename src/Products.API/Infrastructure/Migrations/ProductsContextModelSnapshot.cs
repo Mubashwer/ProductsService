@@ -23,7 +23,6 @@ namespace Products.API.Infrastructure.Migrations
             modelBuilder.Entity("Products.Domain.Aggregates.ProductAggregate.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("DeliveryPrice")
@@ -44,36 +43,32 @@ namespace Products.API.Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Products.Domain.Aggregates.ProductAggregate.ProductOption", b =>
+            modelBuilder.Entity("Products.Domain.Aggregates.ProductAggregate.Product", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.OwnsMany("Products.Domain.Aggregates.ProductAggregate.ProductOption", "ProductOptions", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                            b1.Property<string>("Description")
+                                .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                            b1.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                            b1.HasIndex("ProductId");
 
-                    b.ToTable("ProductOption");
-                });
+                            b1.ToTable("ProductOptions","products");
 
-            modelBuilder.Entity("Products.Domain.Aggregates.ProductAggregate.ProductOption", b =>
-                {
-                    b.HasOne("Products.Domain.Aggregates.ProductAggregate.Product", null)
-                        .WithMany("ProductOptions")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
                 });
 #pragma warning restore 612, 618
         }

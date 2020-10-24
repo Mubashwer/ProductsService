@@ -9,6 +9,8 @@ namespace Products.Infrastructure.EntityConfigurations
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .ValueGeneratedNever();
 
             builder.Property(x => x.Name)
                 .IsRequired();
@@ -25,9 +27,22 @@ namespace Products.Infrastructure.EntityConfigurations
                 .HasColumnType("MONEY")
                 .IsRequired();
 
-            builder.HasMany(x => x.ProductOptions)
-                .WithOne()
-                .IsRequired(); // This ensures foreign key cannot be null and uses cascade delete behaviour
+            builder
+                .OwnsMany(x => x.ProductOptions, navigationBuilder =>
+                {
+                    navigationBuilder.ToTable("ProductOptions", ProductsContext.DefaultSchema);
+                    
+                    navigationBuilder.HasKey(x => x.Id);
+                    navigationBuilder.Property(x => x.Id)
+                        .ValueGeneratedNever();
+
+                    navigationBuilder.Property(x => x.Name)
+                        .IsRequired();
+
+                    navigationBuilder.Property(x => x.Description)
+                        .HasColumnType("TEXT")
+                        .IsRequired(false);
+                });
         }
     }
 }

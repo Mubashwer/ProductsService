@@ -63,7 +63,6 @@ namespace Products.API
                 .AddDbContext<ProductsContext>(options =>
                     {
                         options
-                            .UseLazyLoadingProxies()
                             .UseSqlServer(configuration.GetConnectionString("Products"),
                             sqlServerOptions =>
                             {

@@ -12,7 +12,10 @@ namespace Products.Infrastructure.Repositories
     {
         private readonly ProductsContext _context;
 
-        public ProductRepository(ProductsContext context) => _context = context;
+        public ProductRepository(ProductsContext context)
+        {
+            _context = context;
+        }
 
         public IUnitOfWork UnitOfWork => _context;
 
@@ -20,21 +23,28 @@ namespace Products.Infrastructure.Repositories
         {
             return await _context.Products
                 .AsNoTracking()
-                .Include(x => x.ProductOptions)
                 .AsQueryable()
                 .ToPagedListAsync(pageNumber, pageSize);
         }
 
-        public async Task<Product> AddAsync(Product product) => (await _context.Products.AddAsync(product)).Entity;
+        public async Task<Product> AddAsync(Product product)
+        {
+            return (await _context.Products.AddAsync(product)).Entity;
+        }
 
-        public async Task<Product?> FindByIdAsync(Guid productId) =>
-            await _context.Products
-                .AsNoTracking()
-                .Include(x => x.ProductOptions)
-                .FirstOrDefaultAsync(x => x.Id == productId);
+        public async Task<Product?> FindByIdAsync(Guid productId)
+        {
+            return await _context.Products.AsQueryable().FirstOrDefaultAsync(x => x.Id == productId);
+        }
 
-        public void Update(Product product) => _context.Products.Update(product).State = EntityState.Modified;
+        public void Update(Product product)
+        {
+            _context.Products.Update(product).State = EntityState.Modified;
+        }
 
-        public void Delete(Product product) => _context.Products.Remove(product);
+        public void Delete(Product product)
+        {
+            _context.Products.Remove(product);
+        }
     }
 }

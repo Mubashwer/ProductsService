@@ -7,10 +7,13 @@ namespace Products.API.Infrastructure.Services.ProductService
 {
     public interface IProductService
     {
-        Task<IPagedList<ProductDto>> GetPagedAsync(int pageNumber, int pageSize);
-        Task<ProductDto?> FindByIdAsync(Guid productId);
-        Task<ProductDto> AddAsync(ProductDto productDto);
-        Task UpdateAsync(ProductDto productDto);
-        Task DeleteAsync(ProductDto productDto);
+        Task<IPagedList<ProductDto>> GetPagedProductsAsync(int pageNumber, int pageSize);
+        Task<IPagedList<ProductOptionDto>?> GetPagedProductOptionsAsync(Guid productId, int pageNumber,
+            int pageSize);
+
+        Task<ProductDto?> FindProductByIdAsync(Guid productId);
+        Task<ProductDto> AddProductAsync(ProductDto productDto);
+        Task UpdateProductAsync(ProductDto productDto);
+        Task DeleteProductAsync(ProductDto productDto);
     }
 }

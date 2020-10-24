@@ -29,7 +29,7 @@ namespace Products.API.Controllers
             [FromQuery, Range(1, int.MaxValue)] int pageNumber = 1,
             [FromQuery, Range(1, int.MaxValue)] int pageSize = 100)
         {
-            var products = await _productService.GetPagedAsync(pageNumber, pageSize);
+            var products = await _productService.GetPagedProductsAsync(pageNumber, pageSize);
             return new PagedListDto<ProductDto>(products);
         }
 
@@ -40,7 +40,7 @@ namespace Products.API.Controllers
         [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<ActionResult<ProductDto>> Get([FromRoute] Guid id)
         {
-            var productDto = await _productService.FindByIdAsync(id);
+            var productDto = await _productService.FindProductByIdAsync(id);
             if (productDto is null)
             {
                 return NotFound();
@@ -55,7 +55,7 @@ namespace Products.API.Controllers
         [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<ActionResult<ProductDto>> Post([FromBody] ProductDto productDto)
         {
-            var createdProductDto = await _productService.AddAsync(productDto);
+            var createdProductDto = await _productService.AddProductAsync(productDto);
             var uri = UriHelper.BuildRelative(path: Path.Join(Request.Path, createdProductDto.Id.ToString()));
 
             return Created(uri, createdProductDto);
@@ -68,13 +68,13 @@ namespace Products.API.Controllers
         [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] ProductDto productDto)
         {
-            if (await _productService.FindByIdAsync(id) is null)
+            if (await _productService.FindProductByIdAsync(id) is null)
             {
                 return NotFound();
             }
 
             productDto.Id = id;
-            await _productService.UpdateAsync(productDto);
+            await _productService.UpdateProductAsync(productDto);
 
             return NoContent();
         }
@@ -86,13 +86,13 @@ namespace Products.API.Controllers
         [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var productDto = await _productService.FindByIdAsync(id);
+            var productDto = await _productService.FindProductByIdAsync(id);
             if (productDto is null)
             {
                 return NotFound();
             }
 
-            await _productService.DeleteAsync(productDto);
+            await _productService.DeleteProductAsync(productDto);
             return NoContent();
         }
     }

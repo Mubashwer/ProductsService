@@ -19,7 +19,7 @@ namespace Products.API.Infrastructure.Services.ProductService
             _productRepository = productRepository;
         }
 
-        public async Task<IPagedList<ProductDto>> GetPagedAsync(int pageNumber, int pageSize)
+        public async Task<IPagedList<ProductDto>> GetPagedProductsAsync(int pageNumber, int pageSize)
         {
             var products = await _productRepository.GetPagedAsync(pageNumber, pageSize);
             var productDtos = new PagedList<ProductDto>(products, products.Select(x => x.ToDto()));
@@ -28,7 +28,26 @@ namespace Products.API.Infrastructure.Services.ProductService
             return productDtos;
         }
 
-        public async Task<ProductDto?> FindByIdAsync(Guid productId)
+        public async Task<IPagedList<ProductOptionDto>?> GetPagedProductOptionsAsync(Guid productId, int pageNumber,
+            int pageSize)
+        {
+            var product = await _productRepository.FindByIdAsync(productId);
+
+            if (product is null)
+            {
+                _logger.LogInformation("Product with {ProductId} not found", productId);
+                return null;
+            }
+
+            var productOptions = await product.ProductOptions.ToPagedListAsync(pageNumber, pageSize);
+            var productOptionDtos =
+                new PagedList<ProductOptionDto>(productOptions, productOptions.Select(x => x.ToDto()));
+
+            _logger.LogDebug("ProductOptions fetched successfully");
+            return productOptionDtos;
+        }
+
+        public async Task<ProductDto?> FindProductByIdAsync(Guid productId)
         {
             var product = await _productRepository.FindByIdAsync(productId);
 
@@ -44,7 +63,7 @@ namespace Products.API.Infrastructure.Services.ProductService
             return product?.ToDto();
         }
 
-        public async Task<ProductDto> AddAsync(ProductDto productDto)
+        public async Task<ProductDto> AddProductAsync(ProductDto productDto)
         {
             var product = await _productRepository.AddAsync(productDto.ToEntity());
             await _productRepository.UnitOfWork.SaveChangesAsync();
@@ -53,7 +72,7 @@ namespace Products.API.Infrastructure.Services.ProductService
             return product.ToDto();
         }
 
-        public async Task UpdateAsync(ProductDto productDto)
+        public async Task UpdateProductAsync(ProductDto productDto)
         {
             var product = productDto.ToEntity();
 
@@ -63,7 +82,7 @@ namespace Products.API.Infrastructure.Services.ProductService
             _logger.LogInformation("@{Product} updated successfully", product);
         }
 
-        public async Task DeleteAsync(ProductDto productDto)
+        public async Task DeleteProductAsync(ProductDto productDto)
         {
             var product = productDto.ToEntity();
 

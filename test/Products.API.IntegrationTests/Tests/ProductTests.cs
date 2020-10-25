@@ -27,7 +27,7 @@ namespace Products.API.IntegrationTests.Tests
         public async Task GetProducts_ProductsAvailable_ReturnsProductsWithStatus200(IList<Product> dbProducts)
         {
             // Arrange
-            var client = _factory.CreateClientWithInMemoryDb(async productsContext =>
+            using var client = _factory.CreateClientWithInMemoryDb(async productsContext =>
             {
                 await productsContext.AddRangeAsync(dbProducts);
                 await productsContext.SaveChangesAsync();
@@ -49,10 +49,10 @@ namespace Products.API.IntegrationTests.Tests
         {
             // Arrange
             var payload = CreateProduct().ToDto().ToJsonContent();
-            var client = _factory.CreateClientWithInMemoryDb();
+            using var client = _factory.CreateClientWithInMemoryDb();
 
             // Act
-            var response = await client.PostAsync("api/products", payload);
+            using var response = await client.PostAsync("api/products", payload);
 
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);

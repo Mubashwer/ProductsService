@@ -9,10 +9,10 @@ namespace Products.API.Controllers
     {
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
-        public IActionResult Index() => Redirect("~swagger");
+        public IActionResult Index() => Redirect("~/swagger");
         
-        [ProducesResponseType(Status200OK)]
         [HttpGet("ping")]
+        [ProducesResponseType(Status200OK)]
         public IActionResult Ping() => Ok();
     }
 }

@@ -23,14 +23,14 @@ namespace Products.API.IntegrationTests.Tests
             var productOptionDto = CreateProductOptionDto(dbProduct.Id);
 
             var payload = productOptionDto.ToJsonContent();
-            var client = _factory.CreateClientWithInMemoryDb(async productsContext =>
+            using var client = _factory.CreateClientWithInMemoryDb(async productsContext =>
             {
                 await productsContext.Products.AddAsync(dbProduct);
                 await productsContext.SaveChangesAsync();
             });
 
             // Act
-            var response = await client.PostAsync($"api/products/{dbProduct.Id}/options", payload);
+            using var response = await client.PostAsync($"api/products/{dbProduct.Id}/options", payload);
 
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Products.API.Application.Dtos;
 using Products.API.Extensions;
@@ -25,7 +23,6 @@ namespace Products.API.Controllers
         [HttpGet]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
-        [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<PagedListDto<ProductDto>> Get(
             [FromQuery, Range(1, int.MaxValue)] int pageNumber = 1,
             [FromQuery, Range(1, int.MaxValue)] int pageSize = 100)
@@ -38,7 +35,6 @@ namespace Products.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<ActionResult<ProductDto>> Get([FromRoute] Guid id)
         {
             var productDto = await _productService.FindProductByIdAsync(id);
@@ -53,20 +49,17 @@ namespace Products.API.Controllers
         [HttpPost]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
-        [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<ActionResult<ProductDto>> Post([FromBody] ProductDto productDto)
         {
             var createdProductDto = await _productService.AddProductAsync(productDto);
-            
-            var uri = UriHelper.BuildRelative(path: Path.Join(Request.Path, createdProductDto.Id.ToString()));
-            return Created(uri, createdProductDto);
+
+            return CreatedAtAction(nameof(Get), new {id = createdProductDto.Id}, createdProductDto);
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] ProductDto productDto)
         {
             productDto.Id = id;
@@ -81,7 +74,6 @@ namespace Products.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(ProblemDetails))]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var result = await _productService.DeleteProductAsync(id);

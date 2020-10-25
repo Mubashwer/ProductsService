@@ -6,7 +6,7 @@ using Products.Domain.Aggregates.ProductAggregate;
 using Products.Domain.Common;
 using X.PagedList;
 
-namespace Products.Infrastructure.Repositories
+namespace Products.Infrastructure.Persistence.Repositories
 {
     public class ProductRepository : IProductRepository
     {

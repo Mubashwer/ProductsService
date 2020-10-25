@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Products.API.Infrastructure.Configuration;
 using Products.API.Infrastructure.Services.ProductService;
 using Products.Domain.Aggregates.ProductAggregate;
-using Products.Infrastructure;
-using Products.Infrastructure.Repositories;
+using Products.Infrastructure.DependencyInjection;
+using Products.Infrastructure.Persistence;
+using Products.Infrastructure.Persistence.Repositories;
 
 namespace Products.API
 {
@@ -23,10 +23,9 @@ namespace Products.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddProductsDatabase(Configuration);
+            services.AddInfrastructure(Configuration);
             services.AddControllers();
 
-            services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
         }
 

@@ -1,32 +1,20 @@
 ﻿using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Products.Infrastructure;
+using Products.Domain.Aggregates.ProductAggregate;
+using Products.Infrastructure.Persistence;
+using Products.Infrastructure.Persistence.Repositories;
 
-namespace Products.API.Infrastructure.Configuration
+namespace Products.Infrastructure.DependencyInjection
 {
     public static class DatabaseConfiguration
     {
-        public static IServiceCollection AddProductsDatabase(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            const string connectionStringName = "Products";
-
-            services
-                .AddDbContext<ProductsContext>(options =>
-                    {
-                        options
-                            .UseSqlServer(configuration.GetConnectionString(connectionStringName),
-                                sqlServerOptions =>
-                                {
-                                    sqlServerOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName()
-                                        .Name);
-                                });
-                    }
-                );
-
+            AddProductsDatabase(services, configuration);
+            services.AddTransient<IProductRepository, ProductRepository>();
             return services;
         }
 
@@ -35,7 +23,7 @@ namespace Products.API.Infrastructure.Configuration
         /// </summary>
         /// <remarks>
         /// It takes several seconds until the SQL Server in docker container
-        /// which was just spun up is ready to connect.
+        /// is ready to connect when it is just spun up.
         /// This HACK caters for this.
         /// Use only for local development
         /// </remarks>
@@ -45,7 +33,7 @@ namespace Products.API.Infrastructure.Configuration
             const int retryDelayInMs = 3000;
             const int maxRetryCount = 20;
             var tryCount = 0;
-            
+
             bool CanConnect()
             {
                 try
@@ -67,6 +55,23 @@ namespace Products.API.Infrastructure.Configuration
             }
 
             dbContext.Database.Migrate();
+        }
+
+        private static void AddProductsDatabase(this IServiceCollection services, IConfiguration configuration)
+        {
+            const string connectionStringName = "Products";
+
+            services
+                .AddDbContext<ProductsContext>(options =>
+                    {
+                        options
+                            .UseSqlServer(configuration.GetConnectionString(connectionStringName),
+                                sqlServerOptions =>
+                                {
+                                    sqlServerOptions.MigrationsAssembly(typeof(ProductsContext).Assembly.FullName);
+                                });
+                    }
+                );
         }
     }
 }

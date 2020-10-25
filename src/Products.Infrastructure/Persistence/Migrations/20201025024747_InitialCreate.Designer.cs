@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Products.Infrastructure;
+using Products.Infrastructure.Persistence;
 
-namespace Products.API.Infrastructure.Migrations
+namespace Products.Infrastructure.Persistence.migrations
 {
     [DbContext(typeof(ProductsContext))]
-    [Migration("20201024082039_InitialCreate")]
+    [Migration("20201025024747_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

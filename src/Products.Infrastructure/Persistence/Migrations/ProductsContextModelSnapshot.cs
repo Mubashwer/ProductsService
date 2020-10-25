@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Products.Infrastructure;
+using Products.Infrastructure.Persistence;
 
-namespace Products.API.Infrastructure.Migrations
+namespace Products.Infrastructure.Persistence.migrations
 {
     [DbContext(typeof(ProductsContext))]
     partial class ProductsContextModelSnapshot : ModelSnapshot

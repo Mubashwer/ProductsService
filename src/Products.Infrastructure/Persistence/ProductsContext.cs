@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Products.Domain.Aggregates.ProductAggregate;
 using Products.Domain.Common;
-using Products.Infrastructure.EntityConfigurations;
+using Products.Infrastructure.Persistence.EntityConfigurations;
 
-namespace Products.Infrastructure
+namespace Products.Infrastructure.Persistence
 {
     public class ProductsContext : DbContext, IUnitOfWork
     {

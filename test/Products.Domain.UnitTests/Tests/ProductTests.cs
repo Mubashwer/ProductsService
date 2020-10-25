@@ -4,12 +4,12 @@ using AutoFixture;
 using FluentValidation;
 using Products.Domain.Aggregates.ProductAggregate;
 using Products.Domain.Exceptions;
-using Products.Domain.UnitTests.TestData;
 using Xunit;
+using static Products.TestData.Products.Helper;
 
 namespace Products.Domain.UnitTests.Tests
 {
-    public class ProductTests
+    public sealed class ProductTests
     {
         [Fact]
         public void CreateProduct_WithNullName_ThrowsValidationExceptionWithEmptyNameError()
@@ -28,17 +28,17 @@ namespace Products.Domain.UnitTests.Tests
             Assert.Contains(exception.Errors, x => x.PropertyName == propertyName && x.ErrorMessage == errorMessage);
         }
 
-        [Theory]
-        [ClassData(typeof(ProductWithOptionsTestData))]
-        public void AddProductOption_ProductAlreadyContainsProductOption_ThrowsProductDomainException(Product sut)
+        [Fact]
+        public void AddProductOption_ProductAlreadyContainsProductOption_ThrowsProductDomainException()
         {
             //Arrange
             var fixture = new Fixture();
-            var productOption = sut.ProductOptions.First();
+            var product = CreateProduct(1);
+            var productOption = product.ProductOptions.First();
 
             //Act & Assert
             Assert.Throws<ProductsDomainException>(() =>
-                sut.AddProductOption(productOption.Id, fixture.Create<string>(), fixture.Create<string>()));
+                product.AddProductOption(productOption.Id, fixture.Create<string>(), fixture.Create<string>()));
         }
 
         //TODO: Add more tests later. Not adding more tests now due to time constraint

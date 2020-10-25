@@ -11,7 +11,7 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Products.API.Controllers
 {
-    [Route("products/{productId}/options")]
+    [Route("api/products/{productId}/options")]
     [ApiController]
     public class ProductOptionsController : ControllerBase
     {

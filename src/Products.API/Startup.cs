@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Products.API.Infrastructure.Services.ProductService;
-using Products.Domain.Aggregates.ProductAggregate;
 using Products.Infrastructure.DependencyInjection;
 using Products.Infrastructure.Persistence;
-using Products.Infrastructure.Persistence.Repositories;
+using Serilog;
 
 namespace Products.API
 {
@@ -16,6 +16,10 @@ namespace Products.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -25,6 +29,11 @@ namespace Products.API
         {
             services.AddInfrastructure(Configuration);
             services.AddControllers();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Products API", Version = "v1" });
+            });
 
             services.AddTransient<IProductService, ProductService>();
         }
@@ -37,6 +46,8 @@ namespace Products.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSerilogRequestLogging();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -44,6 +55,12 @@ namespace Products.API
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Products API v1");
+            });
 
             if (env.IsDevelopment())
             {

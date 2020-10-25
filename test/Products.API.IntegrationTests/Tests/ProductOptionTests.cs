@@ -30,7 +30,7 @@ namespace Products.API.IntegrationTests.Tests
             });
 
             // Act
-            var response = await client.PostAsync($"products/{dbProduct.Id}/options", payload);
+            var response = await client.PostAsync($"api/products/{dbProduct.Id}/options", payload);
 
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);

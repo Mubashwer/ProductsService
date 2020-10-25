@@ -34,7 +34,7 @@ namespace Products.API.IntegrationTests.Tests
             });
 
             // Act
-            using var response = await client.GetAsync("products");
+            using var response = await client.GetAsync("api/products");
 
             // Assert
             var responseProducts =
@@ -52,7 +52,7 @@ namespace Products.API.IntegrationTests.Tests
             var client = _factory.CreateClientWithInMemoryDb();
 
             // Act
-            var response = await client.PostAsync("products", payload);
+            var response = await client.PostAsync("api/products", payload);
 
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);

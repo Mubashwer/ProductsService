@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Products.API.Application.Dtos;
+using Products.API.Extensions;
 using Products.API.Infrastructure.Services.ProductService;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -29,8 +30,8 @@ namespace Products.API.Controllers
             [FromQuery, Range(1, int.MaxValue)] int pageNumber = 1,
             [FromQuery, Range(1, int.MaxValue)] int pageSize = 100)
         {
-            var products = await _productService.GetPagedProductsAsync(pageNumber, pageSize);
-            return new PagedListDto<ProductDto>(products);
+            var productDtos = await _productService.GetPagedProductsAsync(pageNumber, pageSize);
+            return productDtos.ToPagedListDto();
         }
 
         [HttpGet("{id}")]

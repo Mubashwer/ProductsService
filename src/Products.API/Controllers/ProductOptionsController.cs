@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Products.API.Application.Dtos;
+using Products.API.Extensions;
 using Products.API.Infrastructure.Services.ProductService;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -36,7 +37,7 @@ namespace Products.API.Controllers
                 return NotFound();
             }
 
-            return new PagedListDto<ProductOptionDto>(productOptionDtos);
+            return productOptionDtos.ToPagedListDto();
         }
 
         [HttpGet("{productOptionId}")]

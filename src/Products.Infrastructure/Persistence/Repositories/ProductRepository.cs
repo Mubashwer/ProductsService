@@ -21,6 +21,16 @@ namespace Products.Infrastructure.Persistence.Repositories
 
         public async Task<IPagedList<Product>> GetPagedAsync(int pageNumber, int pageSize)
         {
+            if (pageNumber < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pageNumber));
+            }
+
+            if (pageSize < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pageNumber));
+            }
+
             return await _context.Products
                 .AsNoTracking()
                 .AsQueryable()

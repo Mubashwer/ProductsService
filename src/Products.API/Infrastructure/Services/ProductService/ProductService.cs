@@ -24,7 +24,9 @@ namespace Products.API.Infrastructure.Services.ProductService
         public async Task<IPagedList<ProductDto>> GetPagedProductsAsync(int pageNumber, int pageSize)
         {
             var products = await _productRepository.GetPagedAsync(pageNumber, pageSize);
-            var productDtos = new PagedList<ProductDto>(products, products.Select(x => x.ToDto()));
+            var productDtos = new StaticPagedList<ProductDto>(
+                products.Select(x => x.ToDto()), pageNumber, pageSize,
+                products.Count);
 
             return productDtos;
         }
@@ -37,7 +39,8 @@ namespace Products.API.Infrastructure.Services.ProductService
 
             var productOptions = await product.ProductOptions.ToPagedListAsync(pageNumber, pageSize);
             var productOptionDtos =
-                new PagedList<ProductOptionDto>(productOptions, productOptions.Select(x => x.ToDto(productId)));
+                new StaticPagedList<ProductOptionDto>(productOptions.Select(x => x.ToDto(productId)), pageNumber,
+                    pageSize, productOptions.Count);
 
             return productOptionDtos;
         }

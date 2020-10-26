@@ -7,10 +7,10 @@ using static Products.TestData.Products.Helper;
 
 namespace Products.API.IntegrationTests.Tests
 {
-    public sealed class ProductOptionTests : IClassFixture<TestApiFactory<Startup>>
+    public sealed class ProductOptionEndpointsTests : IClassFixture<TestApiFactory<Startup>>
     {
         private readonly TestApiFactory<Startup> _factory;
-        public ProductOptionTests(TestApiFactory<Startup> factory)
+        public ProductOptionEndpointsTests(TestApiFactory<Startup> factory)
         {
             _factory = factory;
         }

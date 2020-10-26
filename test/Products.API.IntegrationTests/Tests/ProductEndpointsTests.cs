@@ -14,10 +14,10 @@ using static Products.TestData.Products.Helper;
 
 namespace Products.API.IntegrationTests.Tests
 {
-    public sealed class ProductTests : IClassFixture<TestApiFactory<Startup>>
+    public sealed class ProductEndpointsTests : IClassFixture<TestApiFactory<Startup>>
     {
         private readonly TestApiFactory<Startup> _factory;
-        public ProductTests(TestApiFactory<Startup> factory)
+        public ProductEndpointsTests(TestApiFactory<Startup> factory)
         {
             _factory = factory;
         }

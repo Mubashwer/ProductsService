@@ -86,8 +86,9 @@ namespace Products.API.Controllers
             [FromBody] ProductOptionDto productOptionDto)
         {
             productOptionDto.Id = productOptionId;
+            productOptionDto.ProductId = productId;
 
-            var result = await _productService.UpdateProductOptionAsync(productId, productOptionDto);
+            var result = await _productService.UpdateProductOptionAsync(productOptionDto);
 
             if (!result) return NotFound();
             return NoContent();

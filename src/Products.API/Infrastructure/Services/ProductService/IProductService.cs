@@ -64,10 +64,9 @@ namespace Products.API.Infrastructure.Services.ProductService
         /// <summary>
         /// Updates product option
         /// </summary>
-        /// <param name="productId"></param>
         /// <param name="productOptionDto"></param>
         /// <returns>true if updated; false if product or product option is not found</returns>
-        Task<bool> UpdateProductOptionAsync(Guid productId, ProductOptionDto productOptionDto);
+        Task<bool> UpdateProductOptionAsync(ProductOptionDto productOptionDto);
 
         /// <summary>
         /// Deletes product by Id

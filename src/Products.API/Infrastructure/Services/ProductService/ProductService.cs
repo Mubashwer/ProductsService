@@ -99,9 +99,10 @@ namespace Products.API.Infrastructure.Services.ProductService
             return true;
         }
 
-        public async Task<bool> UpdateProductOptionAsync(Guid productId, ProductOptionDto productOptionDto)
+        public async Task<bool> UpdateProductOptionAsync(ProductOptionDto productOptionDto)
         {
-            var (product, productOption) = await FindProductAndProductOption(productId, productOptionDto.Id);
+            var (product, productOption) =
+                await FindProductAndProductOption(productOptionDto.ProductId, productOptionDto.Id);
 
             if (product is null || productOption is null) return false;
 

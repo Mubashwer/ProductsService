@@ -11,9 +11,11 @@ A project following the principles of Clean Architechture and Domain-driven desi
 
 ### How to run:
 
-- Execute:
+- Command-line:
+		
+        docker-compose build  
 
-        docker-compose up
+        docker-compose up --force-recreate
         
 - Visual Studio 2019:
     - Select docker-compose as startup project
@@ -23,7 +25,7 @@ Visit http://localhost:5000 for SwaggerUI
 
 
 ## Todos and considerations
-
+* Add more comments and documentation
 * Unit tests for Products.Domain need to be completed
 * Integration tests for Products.API need to be completed
 * Consider using Dapper for querying Products and Product Options. Dapper is much faster than Entity Framework Core. Query calls do not alter the domain, hence they don't have to be made through the repository.

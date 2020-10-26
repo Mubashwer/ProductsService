@@ -63,9 +63,9 @@ namespace Products.API.Infrastructure.Services.ProductService
             return product.ToDto();
         }
 
-        public async Task<ProductOptionDto?> AddProductOptionAsync(Guid productId, ProductOptionDto productOptionDto)
+        public async Task<ProductOptionDto?> AddProductOptionAsync(ProductOptionDto productOptionDto)
         {
-            var product = await FindProduct(productId);
+            var product = await FindProduct(productOptionDto.ProductId);
             if (product is null) return null;
 
             product.AddProductOption(productOptionDto.Id, productOptionDto.Name, productOptionDto.Description);
@@ -73,7 +73,7 @@ namespace Products.API.Infrastructure.Services.ProductService
             await _productRepository.UnitOfWork.SaveChangesAsync();
 
             _logger.LogInformation("@{ProductOptionDto} added", productOptionDto);
-            return product.ProductOptions.First(x => x.Id == productOptionDto.Id).ToDto(productId);
+            return product.ProductOptions.First(x => x.Id == productOptionDto.Id).ToDto(productOptionDto.ProductId);
         }
 
         public async Task<bool> UpdateProductAsync(ProductDto productDto)

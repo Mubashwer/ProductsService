@@ -48,12 +48,11 @@ namespace Products.API.Infrastructure.Services.ProductService
         Task<ProductDto> AddProductAsync(ProductDto productDto);
         
         /// <summary>
-        /// Adds product option to a product
+        /// Adds product option to the product
         /// </summary>
-        /// <param name="productId"></param>
         /// <param name="productOptionDto"></param>
         /// <returns>Added <see cref="ProductOptionDto"/> if product is found; null otherwise</returns>
-        Task<ProductOptionDto?> AddProductOptionAsync(Guid productId, ProductOptionDto productOptionDto);
+        Task<ProductOptionDto?> AddProductOptionAsync(ProductOptionDto productOptionDto);
 
         /// <summary>
         /// Updates product

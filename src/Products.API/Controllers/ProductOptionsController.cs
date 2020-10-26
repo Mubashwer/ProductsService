@@ -63,7 +63,9 @@ namespace Products.API.Controllers
             [FromRoute] Guid productId,
             [FromBody] ProductOptionDto productOptionDto)
         {
-            var createdProductOptionDto = await _productService.AddProductOptionAsync(productId, productOptionDto);
+            productOptionDto.ProductId = productId;
+
+            var createdProductOptionDto = await _productService.AddProductOptionAsync(productOptionDto);
             if (createdProductOptionDto is null)
             {
                 return NotFound();

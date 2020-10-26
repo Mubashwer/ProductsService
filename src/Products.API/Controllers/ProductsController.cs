@@ -37,7 +37,7 @@ namespace Products.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult<ProductDto>> Get([FromRoute] Guid id)
         {
-            var productDto = await _productService.FindProductByIdAsync(id);
+            var productDto = await _productService.GetProductAsync(id);
             if (productDto is null)
             {
                 return NotFound();

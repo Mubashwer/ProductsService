@@ -42,13 +42,13 @@ namespace Products.API.Infrastructure.Services.ProductService
             return productOptionDtos;
         }
 
-        public async Task<ProductDto?> FindProductByIdAsync(Guid productId)
+        public async Task<ProductDto?> GetProductAsync(Guid productId)
         {
             var product = await FindProduct(productId);
             return product?.ToDto();
         }
 
-        public async Task<ProductOptionDto?> FindProductOptionByIdAsync(Guid productId, Guid productOptionId)
+        public async Task<ProductOptionDto?> GetProductOptionAsync(Guid productId, Guid productOptionId)
         {
             var (_, productOption) = await FindProductAndProductOption(productId, productOptionId);
             return productOption?.ToDto(productId);

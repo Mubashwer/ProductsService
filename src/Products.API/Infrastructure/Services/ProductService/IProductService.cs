@@ -30,7 +30,7 @@ namespace Products.API.Infrastructure.Services.ProductService
         /// </summary>
         /// <param name="productId"></param>
         /// <returns>Added <see cref="ProductOptionDto"/> if found; null otherwise</returns>
-        Task<ProductDto?> FindProductByIdAsync(Guid productId);
+        Task<ProductDto?> GetProductAsync(Guid productId);
 
         /// <summary>
         /// Finds product option in product
@@ -38,7 +38,7 @@ namespace Products.API.Infrastructure.Services.ProductService
         /// <param name="productId"></param>
         /// <param name="productOptionId"></param>
         /// <returns>Added <see cref="ProductOptionDto"/> if found; null otherwise</returns>
-        Task<ProductOptionDto?> FindProductOptionByIdAsync(Guid productId, Guid productOptionId);
+        Task<ProductOptionDto?> GetProductOptionAsync(Guid productId, Guid productOptionId);
 
         /// <summary>
         /// Adds product

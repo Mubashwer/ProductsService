@@ -26,8 +26,9 @@ Visit http://localhost:5000 for SwaggerUI
 
 ## Todos and considerations
 * Add more comments and documentation
-* Unit tests for Products.Domain need to be completed
-* Integration tests for Products.API need to be completed
+* Complete Unit tests for Products.Domain
+* Completed Integration tests for Products.API
+* Add more tests around paging
 * Consider using Dapper for querying Products and Product Options. Dapper is much faster than Entity Framework Core. Query calls do not alter the domain, hence they don't have to be made through the repository.
 * Use mediatR to fire domain events from Products.Domain project. Handle the domain events to log etc. in Products.API.
 * Create seperate methods to update different properties of concern of the domain objects instead of a single update method.

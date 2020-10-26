@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Products.API.Application.Dtos;
 using Products.API.Controllers;
+using Products.API.Extensions;
 using Products.API.Infrastructure.Services.ProductService;
+using Products.Domain.Aggregates.ProductAggregate;
+using Products.TestData.Products;
 using X.PagedList;
 using Xunit;
 using static Products.TestData.Products.Helper;
@@ -24,26 +26,25 @@ namespace Products.API.UnitTests.Tests.Controllers
             _sut = new ProductOptionsController(_mockProductService.Object);
         }
 
-        [Fact]
-        public async Task GetByProductId_ProductServiceReturnsProductOptionDtos_ReturnsProductOptionDtos()
+        [Theory]
+        [ClassData(typeof(ProductWithManyOptionsTestData))]
+        public async Task GetByProductId_ProductServiceReturnsProductOptionDtos_ReturnsProductOptionDtos(Product product)
         {
             //Arrange
             const int pageNumber = 1;
             const int pageSize = 100;
-            var productId = Guid.NewGuid();
-            var productOptionDtos = new List<ProductOptionDto>
-            {
-                CreateProductOptionDto(productId),
-                CreateProductOptionDto(productId)
-            }.ToPagedList(pageNumber, pageSize);
+
+            var productOptionDtos = product.ProductOptions
+                .Select(x => x.ToDto(product.Id))
+                .ToPagedList(pageNumber, pageSize);
 
             _mockProductService
-                .Setup(x => x.GetPagedProductOptionsAsync(productId, pageNumber, pageSize))
+                .Setup(x => x.GetPagedProductOptionsAsync(product.Id, pageNumber, pageSize))
                 .ReturnsAsync(productOptionDtos)
                 .Verifiable();
 
             //Act
-            var result = await _sut.Get(productId);
+            var result = await _sut.Get(product.Id);
 
             //Assert
             _mockProductService.Verify();
